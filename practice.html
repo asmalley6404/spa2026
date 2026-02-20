@@ -29,21 +29,24 @@
 
     <!-- PROBLEM 2 -->
      <script>
+    // function will convert fahrenheit to celsius
      function fah2cels(ftemp){
         // fomula found at google.com
         ctemp = (ftemp - 32) * 5/9;
         // limit answer to two decimal places
         ctemp = ctemp.toFixed(2);
-        // print result to screen
-        document.write("If the Fahrenheit temp is " + ftemp + " degrees, then the Celsius temp is " + ctemp + " degrees.<br>")
+
+        return ctemp;
      }
      
-    // run function several times with different numbers
-    fah2cels(0);
-    fah2cels(32);
-    fah2cels(65);
-    fah2cels(112);
+    // run function several times with different numbers and print result to screen
+    document.write("The Celsius temp is " + fah2cels(0) + " degrees.<br>");
+    document.write("The Celsius temp is " + fah2cels(32) + " degrees.<br>");
+    document.write("The Celsius temp is " + fah2cels(65) + " degrees.<br>");
+    document.write("The Celsius temp is " + fah2cels(112) + " degrees.<br>");
+    
 	</script>
 	
 </body>
 </html>
+
