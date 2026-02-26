@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta name='viewport' content="width=device-width, initial-scale=1">
+<style type="text/css">
+    #headings {text-align: center; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";}
+  
+    a {font-size: 25px; display: inline-block; margin-bottom: 25px}
+
+    #turn {border: 3px solid #000; max-width: 200px; width: 100%; font-size: 40px;
+        display: block; margin-left: auto; margin-right: auto; margin-bottom: 15px}
+
+    #board {display:block; margin-left: auto; margin-right: auto; width: 350px}
+
+    .square {border: 1px solid #999; max-width: 100px; width: 100%; 
+        max-height: 100px; height: 100%; display: inline-block; 
+        margin: 5px 5px 5px 5px; vertical-align:top; box-sizing: border-box;
+        font-size: 50px; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";
+        text-align: center; padding: 20px;
+    }
+
+    .square:hover {background-color: #3eff34; color: #fff}
+
+    button {display: block; margin-left: auto; margin-right: auto; font-size: 20px}
+
+</style>
+</head>
+<body>
+
+<div id="headings">
+    <h1>Tic Tac Toe Game</h1>
+
+    <!-- Generic link to how-to article -->
+    <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">How to Play</a>
+
+    <!-- Display which player's turn  -->
+    <div id="turn">
+        O's Turn
+    </div>
+</div>
+
+<!-- This div manages the width of the board to ensure it is only 3 squares wide  -->
+<div id="board">   
+    <!-- Draw 9 squares -->
+    <script>
+        const NUM_SQUARES = 9;
+        for (i=0; i<NUM_SQUARES; i++)
+        {
+        id = "sq"+i;
+        document.write( "<div class='square' id='" + id + "'></div>" );
+        }
+
+        window.onload= function() 
+        {
+                squares = document.querySelectorAll(".square")
+                for (i=0; i<squares.length; i++) 
+                squares[i].onclick = chooseSquare;
+        } // end window onload
+     
+   function chooseSquare()
+    {
+        // identify which square was clicked
+        choice = this.id
+
+        // strip out the actual number from the id
+        index = choice.indexOf("sq")+2;
+        number = parseInt(choice.substring(index)); 
+
+        // use that id to write the X
+        document.getElementById(choice).innerHTML = "X";
+
+        // send alert to notify which square was clicked
+        alert("You chose square " + number);
+    }
+    </script>
+   
+    <!-- Button to start game -->
+    <p></p>
+    <button>Start Game</button>
+</div>
+
+</body>
+</html>

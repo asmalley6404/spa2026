@@ -1,0 +1,119 @@
+<html>
+<head>
+<meta name='viewport' content="width=device-width, initial-scale=1">
+<style type="text/css">
+    #headings {text-align: center; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";}
+  
+    a {font-size: 25px; display: inline-block; margin-bottom: 25px}
+
+    #turn {border: 3px solid #000; max-width: 200px; width: 100%; font-size: 40px;
+        display: block; margin-left: auto; margin-right: auto; margin-bottom: 15px}
+
+    #board {display:block; margin-left: auto; margin-right: auto; width: 350px}
+
+    .square {border: 1px solid #999; max-width: 100px; width: 100%; 
+        max-height: 100px; height: 100%; display: inline-block; 
+        margin: 5px 5px 5px 5px; vertical-align:top; box-sizing: border-box;
+        font-size: 50px; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";
+        text-align: center; padding: 20px;
+    }
+
+    .square:hover {background-color: #3eff34; color: #fff}
+
+    button {display: block; margin-left: auto; margin-right: auto; font-size: 20px}
+
+</style>
+</head>
+<body>
+
+<div id="headings">
+    <h1>Tic Tac Toe Game</h1>
+
+    <!-- Generic link to how-to article -->
+    <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">How to Play</a>
+
+    <!-- Display which player's turn  -->
+    <div id="turn">
+        O's Turn
+    </div>
+</div>
+
+<!-- This div manages the width of the board to ensure it is only 3 squares wide  -->
+<div id="board">   
+    <!-- Draw 9 squares -->
+    <script>
+        let playerTurn;
+        const NUM_SQUARES = 9;
+        for (i=0; i<NUM_SQUARES; i++)
+        {
+        id = "sq"+i;
+        document.write( "<div class='square' id='" + id + "'></div>" );
+        }
+
+        window.onload= function() 
+        {
+                // establish starting players turn randomly
+                playerTurn = Math.random();
+                if (playerTurn >= .5){
+                    document.getElementById("turn").innerHTML = "X's Turn";
+                    playerTurn = 1;
+                }
+                else{
+                    document.getElementById("turn").innerHTML = "O's Turn";
+                    playerTurn = 0;
+                }
+
+                // check all squares on board for a click and run chooseSquare function when detected
+                squares = document.querySelectorAll(".square")
+                for (i=0; i<squares.length; i++) 
+                squares[i].onclick = chooseSquare;
+        } // end window onload
+     
+   function chooseSquare()
+    {
+        // identify which square was clicked
+        selectedSquare = document.getElementById(this.id)
+
+        // first make sure square is available
+        if(selectedSquare.innerHTML == ""){
+            // if it is, update square based on current playerTurn variable
+            // 0 is O's turn
+            if(playerTurn == 0){
+                // use id to write the X or O
+                selectedSquare.innerHTML = "O";
+
+                // update player turn text
+                document.getElementById("turn").innerHTML = "X's Turn";
+
+                // update playerTurn variable
+                playerTurn = 1;
+            }
+            // 1 is X's turn
+            else{
+                // use id to write the X or O
+                selectedSquare.innerHTML = "X";
+
+                // update player turn text
+                document.getElementById("turn").innerHTML = "O's Turn";
+
+                // update playerTurn variable
+                playerTurn = 0;            
+            }
+        }
+        // if player tries to play in a square that has already been played, provide alert to notify them
+        else{
+            alert("That square has already been played. Please choose an open square.")
+        }
+
+    }
+    </script>
+   
+    <!-- Button to start game -->
+    <p></p>
+    <button>Start Game</button>
+</div>
+
+</body>
+</html>
