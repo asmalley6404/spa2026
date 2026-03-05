@@ -1,0 +1,192 @@
+<html>
+<head>
+<meta name='viewport' content="width=device-width, initial-scale=1">
+<style type="text/css">
+    #headings {text-align: center; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";}
+  
+    a {font-size: 25px; display: inline-block; margin-bottom: 25px}
+
+    #turn {border: 3px solid #000; max-width: 200px; width: 100%; font-size: 40px;
+        display: block; margin-left: auto; margin-right: auto; margin-bottom: 15px}
+
+    #board {display:block; margin-left: auto; margin-right: auto; width: 350px}
+
+    .square {border: 1px solid #999; max-width: 100px; width: 100%; 
+        max-height: 100px; height: 100%; display: inline-block; 
+        margin: 5px 5px 5px 5px; vertical-align:top; box-sizing: border-box;
+        font-size: 50px; color: #000; font-family:Gotham, 
+        "Helvetica Neue", Helvetica, Arial, "sans-serif";
+        text-align: center; padding: 20px;
+    }
+
+    .square:hover {background-color: #3eff34; color: #fff}
+
+    #startButton {display: block; margin-left: auto; margin-right: auto; font-size: 20px}
+
+</style>
+</head>
+<body>
+
+<div id="headings">
+    <h1>Tic Tac Toe Game</h1>
+
+    <!-- Generic link to how-to article -->
+    <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">How to Play</a>
+
+    <!-- Div to display which player's turn  -->
+    <div id="turn">
+    </div>
+</div>
+
+<!-- This div manages the width of the board to ensure it is only 3 squares wide  -->
+<div id="board">   
+    <script>
+        // define vars
+        let playerTurn;
+        let displayTurn = document.getElementById("turn");
+        let winConditions = [];
+        let gameOver = false;
+        const NUM_SQUARES = 9;
+
+        // draw 9 squares
+        for (i=0; i<NUM_SQUARES; i++)
+        {
+        id = "sq"+i;
+        document.write( "<div class='square' id='" + id + "'></div>" );
+        }
+
+        window.onload= function() 
+        {
+            // randomly select if X or O goes first
+            chooseStarter();
+
+            // check all squares on board for a click and run chooseSquare function when detected
+            squares = document.querySelectorAll(".square")
+            for (i=0; i<squares.length; i++) 
+            squares[i].onclick = chooseSquare;
+
+            // click Start Game button
+            document.getElementById("startButton").onclick = startGame;
+            
+        } // end window onload
+
+
+        function startGame()
+        {
+            // reset game state
+            gameOver = false;
+            // iterate through the board and clear all the squares
+            for (i=0; i<squares.length; i++)
+            squares[i].innerHTML = "";
+
+            // randomly choose starting player
+            chooseStarter();
+        }
+
+
+        function chooseStarter()
+        {
+            // establish starting players turn randomly
+            playerTurn = Math.random();
+            if (playerTurn >= .5){
+                displayTurn.innerHTML = "X's Turn";
+                playerTurn = 1;
+            }
+            else{
+                displayTurn.innerHTML = "O's Turn";
+                playerTurn = 0;
+            }
+        }
+     
+
+        function chooseSquare()
+        {
+            // only play if in right game state
+            if (!gameOver){
+                // first make sure square is available
+                if(this.innerHTML == ""){
+                    // update square based on current playerTurn variable
+                    // 0 is O's turn
+                    if(playerTurn == 0){
+                        // use id to write the X or O
+                        this.innerHTML = "O";
+
+                        // update player turn text
+                        displayTurn.innerHTML = "X's Turn";
+
+                        // update playerTurn variable
+                        playerTurn = 1;
+                    }
+                    // 1 is X's turn
+                    else{
+                        // use id to write the X or O
+                        this.innerHTML = "X";
+
+                        // update player turn text
+                        displayTurn.innerHTML = "O's Turn";
+
+                        // update playerTurn variable
+                        playerTurn = 0;            
+                    }
+
+                    // after each move, get the innerHTML of the squares into a new array
+                    moves = [...squares].map(square=>{
+                                                    if(square.innerHTML == "")
+                                                    {
+                                                        return "-"
+                                                    }
+                                                    else
+                                                    return square.innerHTML;
+                                                }) // end of function
+
+                    // establish all possible win conditions
+                    winConditions[0] = moves[0] + moves[1] + moves[2];
+                    winConditions[1] = moves[3] + moves[4] + moves[5];
+                    winConditions[2] = moves[6] + moves[7] + moves[8];
+                    winConditions[3] = moves[0] + moves[3] + moves[6];
+                    winConditions[4] = moves[1] + moves[4] + moves[7];
+                    winConditions[5] = moves[2] + moves[5] + moves[8];
+                    winConditions[6] = moves[0] + moves[4] + moves[8];
+                    winConditions[7] = moves[2] + moves[4] + moves[6];
+
+                    // check each of the win conidtions to see if there is a winner
+                    if (winConditions.includes("XXX")){
+                        gameOver = true;
+                        displayTurn.innerHTML = "X Wins!";
+                        alert("X Wins! Click Start Game to start again.");
+                    }
+                    else if (winConditions.includes("OOO")){
+                        gameOver = true;
+                        displayTurn.innerHTML = "O Wins!";
+                        alert("O Wins! Click Start Game to start again.");
+                    }
+
+                    // if game is still active and there are no remaining blank squares, the game is a stale mate
+                    if (!gameOver && !moves.includes("-")){
+                        gameOver = true;
+                        displayTurn.innerHTML = "Stalemate!";
+                        alert("The game is a stalemate! Click Start Game to start again.");
+                    }
+                    
+                }
+                // if player tries to play in a square that has already been played, provide alert to notify them
+                else{
+                    alert("That square has already been played. Please choose an open square.")
+                }
+
+            }
+            // if gameOver is true, don't allow any more game play
+            else{
+                alert("The game is over, please click Start Game to start over.")
+            }
+        }
+    </script>
+   
+    <!-- Button to start game -->
+    <p></p>
+    <input type ="button" value="Start Game" id = "startButton">
+</div>
+
+</body>
+</html>
