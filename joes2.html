@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Joe's Hotdogs #2</title>
+    <script>
+        window.onload = function() {
+            // create menu class
+            function Menu(item, price) 
+            {
+                this.item = item;
+                this.price = price;
+            }
+
+            // create cart class
+            function Cart(item, quantity) 
+            {
+                this.item = item;
+                this.quantity = quantity;
+            }
+
+            // create arrays
+            menuArray = [new Menu("Hotdog", 4),
+                            new Menu("Fries", 3.5),
+                            new Menu("Soda", 1.5),
+                            new Menu("Sauerkraut", 1)
+                            ];
+
+            cartArray = [new Cart("Hotdog", 0),
+                            new Cart("Fries", 0),
+                            new Cart("Soda", 0),
+                            new Cart("Sauerkraut", 0)
+                            ];
+
+            // display menu
+            const menuDiv = document.getElementById('menu');
+            menuArray.forEach(choice => {
+                let option = document.createElement('div');
+                option.textContent = `${choice.item}: $${choice.price.toFixed(2)}`;
+                menuDiv.appendChild(option);
+            });
+
+            // populate dropdown
+            let selection = document.getElementById('cartSelection');
+            menuArray.forEach((choice, index) => {
+                let option = document.createElement('option');
+                option.value = index; // store index to find the matching cart item
+                option.textContent = choice.item;
+                selection.appendChild(option);
+            });
+
+            // display shopping cart in the shoppingCart div
+            function showCart() 
+            {
+                let cartDiv = document.getElementById('shoppingCart');
+                // clear existing contents
+                cartDiv.innerHTML = '';
+
+                cartArray.forEach(item => {
+                    if (item.quantity > 0) {
+                        const line = document.createElement('div');
+                        line.textContent = `${item.item} - ${item.quantity}`;
+                        cartDiv.appendChild(line);
+                    }
+                });
+            }
+
+            // add to cart
+            function addToCart() 
+            {
+                let selectedIndex = parseInt(document.getElementById('cartSelection').value, 10);
+                let selectedItem = menuArray[selectedIndex].item;
+
+                // find matching cart item and increment
+                cartArray.forEach(choice => {
+                    if (choice.item === selectedItem) {
+                        choice.quantity += 1;
+                    }
+                });
+
+                // show updated cart
+                showCart();
+            }
+
+            // add cart total, display, then clear
+            function checkoutCart()
+            {
+                let total = 0;
+                let orderSummary = ""
+
+                menuArray.forEach((menuItem, index) => {
+                    if (cartArray[index].quantity > 0)
+                    {
+                        total += menuItem.price * cartArray[index].quantity;
+                        orderSummary += menuItem.item + " - " + (menuItem.price * cartArray[index].quantity).toFixed(2) + "\n";
+                    }
+                });
+
+                orderSummary += "\nGrand Total: $" + total.toFixed(2);
+
+                // alert user of order summary
+                alert(orderSummary);
+
+                // clear the cart and then show it empty
+                cartArray.forEach(choice => {choice.quantity = 0});
+                showCart();
+            }
+
+            // add to cart button click
+            document.getElementById('addToCartBtn').onclick = addToCart;
+
+            // checkout button click
+            document.getElementById('checkoutBtn').onclick = checkoutCart;
+
+            // initial show cart
+            showCart();
+        };
+    </script>
+</head>
+
+<body>
+    <h2>Menu</h2>
+    <div id="menu"></div>
+
+    <label for="cartSelection">Choose an item:</label><br>
+    <select name="cartSelection" id="cartSelection"></select>
+    <br><br>
+    <input type="button" value="Add to Cart" id="addToCartBtn">
+    <br><br>
+
+    <h3>Shopping Cart</h3>
+    <div id="shoppingCart"></div>
+
+    <br><br>
+    <input type="button" value="Checkout" id="checkoutBtn">
+</body>
+</html>

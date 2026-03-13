@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Joe's Hotdogs #1</title>
+</head>
+
+<body>
+    <script>
+
+        // associative array
+        menu = [];
+        menu["Hotdogs"] = "4.00"  // putting the value in quotes to get two decimal places when it displays screen
+        menu["Fries"] = "3.50"
+        menu["Soda"] = "1.50"
+        menu["Sauerkraut"] = "1.00"
+
+        // display array menu
+        for (item in menu)
+            document.write(item + ": $" + menu[item] + "<br>")
+
+
+        // add a break for page spacing
+        document.write("<br>")
+
+
+        // js object
+        var menu2 = {
+            Hotdog: "4.00",
+            Fries: "3.50",
+            Soda: "1.50",
+            Sauerkraut: "1.00"
+        }
+
+        // display js object menu
+        Object.keys(menu2).forEach(item => {
+            document.write(item + ": $" + menu2[item] + "<br>")
+        })
+
+
+        // add a break for page spacing
+        document.write("<br>")  
+        
+
+        // class
+        function Menu3(item, price)
+        {
+            this.item = item;
+            this.price = price;
+            this.show = function() // method to display the menu
+                {
+                    document.write(this.item + ": $" + this.price.toFixed(2) + "<br>")                                     
+                } // end show method
+        } // end menu3 class
+
+        // make array of menu items
+        menu3Array = [new Menu3("Hotdog", 4),
+                      new Menu3("Fries", 3.5),
+                      new Menu3("Soda", 1.5),
+                      new Menu3("Sauerkraut", 1)
+                     ]
+
+        // display class menu
+        menu3Array.forEach((item)=>{item.show()})
+
+    </script>
+
+
+</body>
+</html>
